@@ -76,7 +76,7 @@ namespace ScanStoreService.Features.Users
                 }
 
                 var salt = Guid.NewGuid().ToByteArray();
-                var person = new Person
+                var person = new Persons
                 {
                     Username = message.User.Username,
                     Email = message.User.Email,
@@ -86,7 +86,7 @@ namespace ScanStoreService.Features.Users
 
                 _context.Persons.Add(person);
                 await _context.SaveChangesAsync(cancellationToken);
-                var user = _mapper.Map<Domain.Person, User>(person);
+                var user = _mapper.Map<Domain.Persons, User>(person);
                 user.Token = await _jwtTokenGenerator.CreateToken(person.Username);
                 return new UserEnvelope(user);
             }

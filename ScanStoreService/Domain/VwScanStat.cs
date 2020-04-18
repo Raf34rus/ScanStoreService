@@ -11,7 +11,6 @@ namespace ScanStoreService.Domain
         public int? CountScanPts { get; set; }
         public int? CountScanVipiska { get; set; }
         public int? CountScanIl { get; set; }
-        public int? CountScanEtc { get; set; }
         public int? DocExist { get; set; }
     }
 }

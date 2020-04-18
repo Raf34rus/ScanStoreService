@@ -9,7 +9,6 @@ namespace ScanStoreService.Domain
         {
             CessionScans = new HashSet<CessionScans>();
             Contracts = new HashSet<Contracts>();
-            ContractsFromCessionsAssigment = new HashSet<ContractsFromCessionsAssigment>();
         }
 
         public int Id { get; set; }
@@ -20,12 +19,9 @@ namespace ScanStoreService.Domain
         public DateTime? CommitDate { get; set; }
         public DateTime DateLastUpdate { get; set; }
         public int? AssignmentCess { get; set; }
-        public string PortfolioName { get; set; }
-        public int? MigrPartnerId { get; set; }
 
         public virtual Partners Partner { get; set; }
         public virtual ICollection<CessionScans> CessionScans { get; set; }
         public virtual ICollection<Contracts> Contracts { get; set; }
-        public virtual ICollection<ContractsFromCessionsAssigment> ContractsFromCessionsAssigment { get; set; }
     }
 }

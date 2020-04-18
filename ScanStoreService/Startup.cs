@@ -19,6 +19,7 @@ using ScanStoreService.Infrastructure;
 using AutoMapper;
 using ScanStoreService.Infrastructure.Security;
 using ScanStoreService.Features.Profiles;
+using ScanStoreService.Domain;
 
 namespace ScanStoreService
 {

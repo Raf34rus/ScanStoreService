@@ -8,7 +8,6 @@ namespace ScanStoreService.Domain
         public Partners()
         {
             Cessions = new HashSet<Cessions>();
-            MigrPartners = new HashSet<MigrPartners>();
             PartnerTemplates = new HashSet<PartnerTemplates>();
         }
 
@@ -17,7 +16,6 @@ namespace ScanStoreService.Domain
         public bool PrimaryCreditor { get; set; }
 
         public virtual ICollection<Cessions> Cessions { get; set; }
-        public virtual ICollection<MigrPartners> MigrPartners { get; set; }
         public virtual ICollection<PartnerTemplates> PartnerTemplates { get; set; }
     }
 }

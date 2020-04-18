@@ -8,6 +8,7 @@ using ScanStoreService.Infrastructure.Security;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using ScanStoreService.Domain;
 
 namespace ScanStoreService.Features.Users
 {
@@ -74,7 +75,7 @@ namespace ScanStoreService.Features.Users
 
                 await _context.SaveChangesAsync(cancellationToken);
 
-                return new UserEnvelope(_mapper.Map<Domain.Person, User>(person));
+                return new UserEnvelope(_mapper.Map<Domain.Persons, User>(person));
             }
         }
     }

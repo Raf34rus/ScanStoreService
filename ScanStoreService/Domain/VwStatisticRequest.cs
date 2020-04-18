@@ -36,6 +36,5 @@ namespace ScanStoreService.Domain
         public string Avtokredit { get; set; }
         public string Pereustup { get; set; }
         public int ReqType { get; set; }
-        public int ReqStatus { get; set; }
     }
 }

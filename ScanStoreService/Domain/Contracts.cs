@@ -9,7 +9,6 @@ namespace ScanStoreService.Domain
         {
             ContractRequess = new HashSet<ContractRequess>();
             ContractScans = new HashSet<ContractScans>();
-            ContractsFromCessionsAssigment = new HashSet<ContractsFromCessionsAssigment>();
             ContractsLocations = new HashSet<ContractsLocations>();
             LogUpdContractScansLocations = new HashSet<LogUpdContractScansLocations>();
         }
@@ -50,7 +49,6 @@ namespace ScanStoreService.Domain
         public virtual ContractSigns IsAssigmentNavigation { get; set; }
         public virtual ICollection<ContractRequess> ContractRequess { get; set; }
         public virtual ICollection<ContractScans> ContractScans { get; set; }
-        public virtual ICollection<ContractsFromCessionsAssigment> ContractsFromCessionsAssigment { get; set; }
         public virtual ICollection<ContractsLocations> ContractsLocations { get; set; }
         public virtual ICollection<LogUpdContractScansLocations> LogUpdContractScansLocations { get; set; }
     }

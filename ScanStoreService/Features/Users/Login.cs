@@ -9,6 +9,7 @@ using ScanStoreService.Infrastructure.Security;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using ScanStoreService.Domain;
 
 namespace ScanStoreService.Features.Users
 {
@@ -71,7 +72,7 @@ namespace ScanStoreService.Features.Users
                     throw new RestException(HttpStatusCode.Unauthorized, new { Error = "Invalid email / password." });
                 }
 
-                var user = _mapper.Map<Domain.Person, User>(person);
+                var user = _mapper.Map<Domain.Persons, User>(person);
                 user.Token = await _jwtTokenGenerator.CreateToken(person.Username);
                 return new UserEnvelope(user);
             }

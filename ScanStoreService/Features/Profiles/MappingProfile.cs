@@ -6,7 +6,7 @@ namespace ScanStoreService.Features.Profiles
     {
         public MappingProfile()
         {
-            CreateMap<Domain.Person, Profile>(MemberList.None);
+            CreateMap<Domain.Persons, Profile>(MemberList.None);
         }
     }
 }

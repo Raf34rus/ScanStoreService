@@ -5,6 +5,7 @@ using AutoMapper;
 using ScanStoreService.Infrastructure;
 using ScanStoreService.Infrastructure.Errors;
 using Microsoft.EntityFrameworkCore;
+using ScanStoreService.Domain;
 
 namespace ScanStoreService.Features.Profiles
 {
@@ -32,7 +33,7 @@ namespace ScanStoreService.Features.Profiles
             {
                 throw new RestException(HttpStatusCode.NotFound, new { User = Constants.NOT_FOUND });
             }
-            var profile = _mapper.Map<Domain.Person, Profile>(person);
+            var profile = _mapper.Map<Domain.Persons, Profile>(person);
 
             if (currentUserName != null)
             {

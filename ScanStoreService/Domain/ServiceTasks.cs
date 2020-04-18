@@ -9,7 +9,6 @@ namespace ScanStoreService.Domain
         {
             LogInsContractScans = new HashSet<LogInsContractScans>();
             LogInsContracts = new HashSet<LogInsContracts>();
-            LogInsContractsFromCessionsAssigment = new HashSet<LogInsContractsFromCessionsAssigment>();
             LogInsRequests = new HashSet<LogInsRequests>();
             LogUpdContractAssign = new HashSet<LogUpdContractAssign>();
             LogUpdContractScansLocations = new HashSet<LogUpdContractScansLocations>();
@@ -33,7 +32,6 @@ namespace ScanStoreService.Domain
         public virtual ServiceTasksTypesTask TypeTaskNavigation { get; set; }
         public virtual ICollection<LogInsContractScans> LogInsContractScans { get; set; }
         public virtual ICollection<LogInsContracts> LogInsContracts { get; set; }
-        public virtual ICollection<LogInsContractsFromCessionsAssigment> LogInsContractsFromCessionsAssigment { get; set; }
         public virtual ICollection<LogInsRequests> LogInsRequests { get; set; }
         public virtual ICollection<LogUpdContractAssign> LogUpdContractAssign { get; set; }
         public virtual ICollection<LogUpdContractScansLocations> LogUpdContractScansLocations { get; set; }

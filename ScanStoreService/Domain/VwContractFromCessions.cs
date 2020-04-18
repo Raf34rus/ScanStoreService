@@ -28,7 +28,6 @@ namespace ScanStoreService.Domain
         public int? CountScanPts { get; set; }
         public int? CountScanVipiska { get; set; }
         public int? CountScanIl { get; set; }
-        public int? CountScanEtc { get; set; }
         public string Auditing { get; set; }
         public string Avtocredit { get; set; }
         public string IsAssigment { get; set; }

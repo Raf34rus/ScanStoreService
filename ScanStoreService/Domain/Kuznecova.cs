@@ -14,6 +14,5 @@ namespace ScanStoreService.Domain
         public string NewBox { get; set; }
         public string NewFolder { get; set; }
         public byte? NewExist { get; set; }
-        public DateTime? DeptDate { get; set; }
     }
 }
