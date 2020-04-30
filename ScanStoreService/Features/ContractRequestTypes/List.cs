@@ -21,18 +21,21 @@ namespace ScanStoreService.Features.ContractRequestTypes
             public QueryHandler(Domain.ScanStoreContext context)
             {
                 _context = context;
+                _context.ChangeTracker.LazyLoadingEnabled = false;
             }
 
             public async Task<ContractRequestTypesEnvelope> Handle(Query message, CancellationToken cancellationToken)
-            {                              
-                var contractRequestTypes = await _context.ContractRequestTypes
+            {
+                IQueryable<Domain.ContractRequestTypes> queryable = _context.ContractRequestTypes;
+                var contractRequestTypes = await queryable
                     .OrderBy(x => x.Id)
                     .AsNoTracking()
+                    //.Select(s => new ContractRequestTypesView(s))
                     .ToListAsync(cancellationToken);
 
                 return new ContractRequestTypesEnvelope()
                 {
-                    ContractRequestTypes = contractRequestTypes.ToList(),
+                    ContractRequestTypes = contractRequestTypes,
                     ContractRequestTypesCount = contractRequestTypes.Count()                    
                 };
             }

@@ -35,7 +35,6 @@ namespace ScanStoreService.Domain
         public bool SetPasport { get; set; }
         public bool SetForm { get; set; }
         public bool SetGraph { get; set; }
-
         public virtual OfficeAddress AddressToIlNavigation { get; set; }
         public virtual Contracts Contract { get; set; }
         public virtual ContractRequestCommentType ReqCommentNavigation { get; set; }
@@ -44,5 +43,7 @@ namespace ScanStoreService.Domain
         public virtual ICollection<ContractRequestBitSendLog> ContractRequestBitSendLog { get; set; }
         public virtual ICollection<ContractsInRequest> ContractsInRequest { get; set; }
         public virtual ICollection<FastRequess> FastRequess { get; set; }
+        public int? BitRequestsId { get; set; }
+        public virtual BitRequest BitRequests { get; set; }
     }
 }

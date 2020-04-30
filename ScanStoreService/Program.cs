@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
@@ -11,7 +12,7 @@ namespace ScanStoreService
 {
     public class Program
     {
-        
+      
         public static void Main(string[] args)
         {
             // read database configuration (database provider + database connection) from environment variables            
@@ -22,8 +23,10 @@ namespace ScanStoreService
                 .Build();
 
             var host = new WebHostBuilder()
-                .UseConfiguration(config)
+                .UseConfiguration(config)                
                 .UseKestrel()
+                .UseIISIntegration()
+                .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseUrls($"http://+:5000")
                 .UseStartup<Startup>()
                 .Build();

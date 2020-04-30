@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using ScanStoreService.Domain;
 using ScanStoreService.Infrastructure;
 
-namespace ScanStoreService.Features.ContractRequests
+namespace ScanStoreService.Features.BitRequests
 {
     public class Create
     {
@@ -31,7 +31,7 @@ namespace ScanStoreService.Features.ContractRequests
             }
         }
 
-        public class ContractRequestData
+        public class BitRequestData
         {
             public string Id { get; set; }
             public string IdPkb { get; set; }
@@ -39,9 +39,9 @@ namespace ScanStoreService.Features.ContractRequests
             public ReqData[] ReqList { get; set; }
         }
 
-        public class ContractRequestDataValidator : AbstractValidator<ContractRequestData>
+        public class BitRequestDataValidator : AbstractValidator<BitRequestData>
         {
-            public ContractRequestDataValidator()
+            public BitRequestDataValidator()
             {                
                 RuleFor(x => x.Id).NotNull().NotEmpty();
                 RuleFor(x => x.IdPkb).NotNull().NotEmpty();
@@ -51,19 +51,19 @@ namespace ScanStoreService.Features.ContractRequests
             }
         }
 
-        public class Command : IRequest<ContractRequestEnvelope>
+        public class Command : IRequest<BitRequestEnvelope>
         {
-            public ContractRequestData ContractRequest { get; set; }
+            public BitRequestData BitRequest { get; set; }
         }
         public class CommandValidator : AbstractValidator<Command>
         {
             public CommandValidator()
             {
-                RuleFor(x => x.ContractRequest).NotNull().SetValidator(new ContractRequestDataValidator());
+                RuleFor(x => x.BitRequest).NotNull().SetValidator(new BitRequestDataValidator());
             }
         }
 
-        public class Handler : IRequestHandler<Command, ContractRequestEnvelope>
+        public class Handler : IRequestHandler<Command, BitRequestEnvelope>
         {
             private readonly ScanStoreContext _context;
             private readonly ICurrentUserAccessor _currentUserAccessor;
@@ -74,35 +74,30 @@ namespace ScanStoreService.Features.ContractRequests
                 _currentUserAccessor = currentUserAccessor;
             }
 
-            public async Task<ContractRequestEnvelope> Handle(Command message, CancellationToken cancellationToken)
+            public async Task<BitRequestEnvelope> Handle(Command message, CancellationToken cancellationToken)
             {
                 //var author = await _context.Persons.FirstAsync(x => x.Username == _currentUserAccessor.GetCurrentUsername(), cancellationToken);
-                var contractRequests = new List<ContractRequess>();
-                foreach (var req in (message.ContractRequest.ReqList ?? Enumerable.Empty<ReqData>()))
+                if (message.BitRequest.ReqList == null)
+                    throw new ArgumentException($"Отсутствует список типов запрашиваемых документов");
+                var checkContract = await _context.Contracts.Where(x => x.IdPkb == Int32.Parse(message.BitRequest.IdPkb)).FirstOrDefaultAsync();
+                if (checkContract == null)
+                    throw new ArgumentException($"Контракт ID {message.BitRequest.IdPkb} не найден в БД");
+
+                var newBitRequest = new BitRequest()
                 {
-                    var t = await _context.ContractRequess.Where(x => x.ReqType == Int32.Parse(req.Req_tp) && x.IdBit == message.ContractRequest.Id).FirstOrDefaultAsync();
-                    if (t == null)
-                    {
-                        t = new ContractRequess()
-                        {
-                            IdBit = message.ContractRequest.Id,
-                            ReqType = 1,//Int32.Parse(req.Req_tp),
-                            RequestComment = req.Com,
-                            ArchivistComment = "",
-                            RequestUser = "From1cBIT",
-                            RequestUserFio = message.ContractRequest.Fio,
-                            IsUrgent = true,
-                            ReqStatus = 3, //генерирование статуса основываясь на её местоположении                        
-                            ContractId = 100,
-                            RequestDate = DateTime.Now,
-                            ReqComment = 1
+                    IdBit = Int32.Parse(message.BitRequest.Id),
+                    IdPkb = Int64.Parse(message.BitRequest.IdPkb),
+                    Status = BitRequestStatus.New,
+                    ReqCount = message.BitRequest.ReqList.Count(),
+                    Fio = message.BitRequest.Fio
+                };
 
+                foreach (var req in (message.BitRequest.ReqList ?? Enumerable.Empty<ReqData>()))
+                {
+                    var newRequestDetail = new ContractRequess(newBitRequest, checkContract.Id, Int32.Parse(req.Req_tp));
+                    newBitRequest.ContractRequests.Add(newRequestDetail);
 
-                        };
-                        contractRequests.Add(t);
-                    }
-                    //else Error? or add
-                    await _context.ContractRequess.AddRangeAsync(contractRequests, cancellationToken);
+                    await _context.BitRequests.AddAsync(newBitRequest, cancellationToken);
                     //save immediately for reuse
                     try
                     {
@@ -113,9 +108,8 @@ namespace ScanStoreService.Features.ContractRequests
                     }
                 }
 
-                return new ContractRequestEnvelope(contractRequests.FirstOrDefault());
+                return new BitRequestEnvelope(newBitRequest);
             }
         }
     }
-
 }

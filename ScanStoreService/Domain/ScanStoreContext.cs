@@ -8,13 +8,19 @@ namespace ScanStoreService.Domain
     {
         public ScanStoreContext()
         {
-        }
 
+        }
         public ScanStoreContext(DbContextOptions<ScanStoreContext> options)
             : base(options)
         {
+           
         }
+        #region NewEntity
+        //public virtual DbSet<BitRequestDetail> BitRequestDetails { get; set; }
+        public virtual DbSet<BitRequest> BitRequests { get; set; }
+        #endregion NewEntity
 
+        #region OldEntity
         public virtual DbSet<Access> Access { get; set; }
         public virtual DbSet<Accs> Accs { get; set; }
         public virtual DbSet<AdUsers> AdUsers { get; set; }
@@ -96,18 +102,21 @@ namespace ScanStoreService.Domain
         public virtual DbSet<VwScanStat> VwScanStat { get; set; }
         public virtual DbSet<VwStatisticRequest> VwStatisticRequest { get; set; }
         public virtual DbSet<ZdEaSubType> ZdEaSubType { get; set; }
-
+        #endregion
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=Priserv8074;Database=ScanStoreRaf;Trusted_Connection=True;");
+                #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+                optionsBuilder.UseSqlServer("Server=Priserv8074;Database=ScanStoreRaf;Trusted_Connection=True;");                
             }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.ApplyConfiguration(new BitRequestsConfiguration());
+            //modelBuilder.ApplyConfiguration(new BitRequestDetailsConfiguration());
+            #region OldEntityConfiguration
             modelBuilder.Entity<Access>(entity =>
             {
                 entity.Property(e => e.Id).HasColumnName("id");
@@ -3630,7 +3639,7 @@ namespace ScanStoreService.Domain
                     .HasMaxLength(512)
                     .IsUnicode(false);
             });
-
+            #endregion
             OnModelCreatingPartial(modelBuilder);
         }
 

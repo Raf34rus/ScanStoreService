@@ -1,5 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
 using System.Collections.Generic;
+
 
 namespace ScanStoreService.Domain
 {
@@ -20,12 +21,12 @@ namespace ScanStoreService.Domain
         public string Description { get; set; }
         public int VisibleStatus { get; set; }
 
-        public virtual ContractRequestTypesStatusVisible VisibleStatusNavigation { get; set; }
-        public virtual ICollection<ContractRequess> ContractRequess { get; set; }
-        public virtual ICollection<ContractScans> ContractScans { get; set; }
-        public virtual ICollection<ContractsLocations> ContractsLocations { get; set; }
-        public virtual ICollection<LogInsContractScans> LogInsContractScans { get; set; }
-        public virtual ICollection<LogInsRequests> LogInsRequests { get; set; }
-        public virtual ICollection<LogUpdContractScansLocations> LogUpdContractScansLocations { get; set; }
+        [JsonIgnore] public virtual ContractRequestTypesStatusVisible VisibleStatusNavigation { get; set; }
+        [JsonIgnore] public virtual ICollection<ContractRequess> ContractRequess { get; set; }
+        [JsonIgnore] public virtual ICollection<ContractScans> ContractScans { get; set; }
+        [JsonIgnore] public virtual ICollection<ContractsLocations> ContractsLocations { get; set; }
+        [JsonIgnore] public virtual ICollection<LogInsContractScans> LogInsContractScans { get; set; }
+        [JsonIgnore] public virtual ICollection<LogInsRequests> LogInsRequests { get; set; }
+        [JsonIgnore] public virtual ICollection<LogUpdContractScansLocations> LogUpdContractScansLocations { get; set; }
     }
 }

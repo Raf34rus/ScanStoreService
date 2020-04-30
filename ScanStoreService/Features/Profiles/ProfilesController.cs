@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ScanStoreService.Features.Profiles
 {
-    [Route("profiles")]
+   // [Route("profiles")]
     public class ProfilesController : Controller
     {
         private readonly IMediator _mediator;
