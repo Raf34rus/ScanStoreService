@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using ScanStoreService.Infrastructure.Security;
 using Serilog;
+using Serilog.Formatting.Compact;
 using Serilog.Sinks.SystemConsole.Themes;
 using System;
 using System.Collections.Generic;
@@ -72,10 +73,11 @@ namespace ScanStoreService
         {
             // Attach the sink to the logger configuration
             var log = new LoggerConfiguration()
-                .MinimumLevel.Verbose()
+                .MinimumLevel.Verbose()                
                 .Enrich.FromLogContext()
+                .WriteTo.File(new CompactJsonFormatter(), "log.clef")
                 //just for local debug
-                .WriteTo.Console(outputTemplate: "{Timestamp:HH:mm:ss} [{Level}] {SourceContext} {Message}{NewLine}{Exception}", theme: AnsiConsoleTheme.Code)
+                .WriteTo.Console(outputTemplate: "{Timestamp:HH:mm:ss} [{Level}] {SourceContext} {Message}{NewLine}{Exception}", theme: AnsiConsoleTheme.Code)                
                 .CreateLogger();
 
             loggerFactory.AddSerilog(log);

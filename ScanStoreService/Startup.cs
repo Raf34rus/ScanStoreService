@@ -20,6 +20,7 @@ using AutoMapper;
 using ScanStoreService.Infrastructure.Security;
 using ScanStoreService.Features.Profiles;
 using ScanStoreService.Domain;
+using Microsoft.AspNetCore.Rewrite;
 
 namespace ScanStoreService
 {
@@ -75,6 +76,7 @@ namespace ScanStoreService
             });
 
             services.AddCors();
+
             services.AddMvc(opt =>
             {
                 opt.Conventions.Add(new GroupByApiRootConvention());
@@ -101,8 +103,6 @@ namespace ScanStoreService
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             );
             services.AddJwt();
-
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -118,6 +118,10 @@ namespace ScanStoreService
                     .AllowAnyHeader()  // принимать запросы с любыми заголовками 
                     .AllowAnyMethod());// принимать запросы любого типа (GET/POST)
 
+            var option = new RewriteOptions();
+            option.AddRedirect("^$", "swagger/index.html");
+            app.UseRewriter(option);
+
             app.UseMvc();
 
             // Enable middleware to serve generated Swagger as a JSON endpoint
@@ -129,9 +133,10 @@ namespace ScanStoreService
             // Enable middleware to serve swagger-ui assets(HTML, JS, CSS etc.)
             app.UseSwaggerUI(x =>
             {
-                x.SwaggerEndpoint("/swagger/v1/swagger.json", "ScanStoreService API V1");
+                x.SwaggerEndpoint("/swagger/v1/swagger.json", "ScanStoreService API V1");         
             });
-            app.ApplicationServices.GetRequiredService<ScanStoreContext>().Database.EnsureCreated(); 
+
+            //app.ApplicationServices.GetRequiredService<ScanStoreContext>().Database.EnsureCreated(); 
         }
     }
 }

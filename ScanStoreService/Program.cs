@@ -12,7 +12,7 @@ namespace ScanStoreService
 {
     public class Program
     {
-      
+/*      
         public static void Main(string[] args)
         {
             // read database configuration (database provider + database connection) from environment variables            
@@ -22,9 +22,10 @@ namespace ScanStoreService
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .Build();
 
-            var host = new WebHostBuilder()
+            var host = new WebHostBuilder()                
                 .UseConfiguration(config)                
                 .UseKestrel()
+                //.UseIIS()
                 .UseIISIntegration()
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseUrls($"http://+:5000")
@@ -33,8 +34,8 @@ namespace ScanStoreService
 
             host.Run();
         }
-        
-        /*
+*/       
+  
                 public static void Main(string[] args)
                 {
                     CreateHostBuilder(args).Build().Run();
@@ -44,11 +45,18 @@ namespace ScanStoreService
                     Host.CreateDefaultBuilder(args)
                         .ConfigureWebHostDefaults(webBuilder =>
                         {
+                            var config = new ConfigurationBuilder()
+                                .AddEnvironmentVariables()
+                                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                                .Build();
+
+                            webBuilder.UseConfiguration(config);
                             webBuilder.UseKestrel();
-                            webBuilder.UseUrls($"http://+:5000");
+                            webBuilder.UseIIS();
+                            //webBuilder.UseUrls($"http://+:5000");
                             webBuilder.UseStartup<Startup>();
                         });
-          */
+  
     }
 
 
