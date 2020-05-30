@@ -41,6 +41,15 @@ namespace ScanStoreService
             services.AddScoped(typeof(IPipelineBehavior<,>), typeof(DBContextTransactionPipelineBehavior<,>));
 
             //DataAccess.AppContext
+#if DEBUG
+            services.AddDbContext<ScanStoreContext>(options =>
+              options.UseSqlServer(
+                  Configuration.GetConnectionString("DefaultConnectionTest")));
+#else
+            services.AddDbContext<ScanStoreContext>(options =>
+              options.UseSqlServer(
+                  Configuration.GetConnectionString("DefaultConnectionWork")));
+#endif
             services.AddDbContext<ScanStoreContext>(options =>
               options.UseSqlServer(
                   Configuration.GetConnectionString("DefaultConnection")));

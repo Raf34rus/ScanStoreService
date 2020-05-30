@@ -1,6 +1,8 @@
 ﻿using System;
+using System.IO;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.Extensions.Configuration;
 
 namespace ScanStoreService.Domain
 {
@@ -108,7 +110,14 @@ namespace ScanStoreService.Domain
             if (!optionsBuilder.IsConfigured)
             {
                 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=Priserv8074;Database=ScanStoreRaf;Trusted_Connection=True;");                
+                
+                var config = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json").Build();
+#if DEBUG
+                var connect = config["ConnectionStrings:DefaultConnectionTest"];
+#else
+                var connect = config["ConnectionStrings:DefaultConnectionWork"];
+#endif
+                optionsBuilder.UseSqlServer(connect); //("Server=Priserv8074;Database=ScanStoreRaf;Trusted_Connection=True;");
             }
         }
 

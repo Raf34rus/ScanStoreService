@@ -15,6 +15,8 @@ namespace ScanStoreService.Infrastructure
 
         public string GetCurrentUsername()
         {
+            var tt = _httpContextAccessor.HttpContext.User?.Claims;
+            var tt2 = _httpContextAccessor.HttpContext.User?.Claims.ToString();
             return _httpContextAccessor.HttpContext.User?.Claims?.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
         }
     }

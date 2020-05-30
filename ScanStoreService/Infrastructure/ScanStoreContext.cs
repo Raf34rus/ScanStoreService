@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Data;
+using System.IO;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.Extensions.Configuration;
 using ScanStoreService.Domain;
 
 namespace ScanStoreService.Domain
@@ -17,7 +19,14 @@ namespace ScanStoreService.Domain
         public ScanStoreContext CreateDbContext(string[] args)
         {
             var optionsBuilder = new DbContextOptionsBuilder<ScanStoreContext>();
-            optionsBuilder.UseSqlServer(@"Server=Priserv8074;Database=ScanStoreRaf;Trusted_Connection=True;", opts => opts.CommandTimeout((int)TimeSpan.FromMinutes(10).TotalSeconds));
+            var config = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json").Build();
+#if DEBUG
+                var connect = config["ConnectionStrings:DefaultConnectionTest"];
+#else
+            var connect = config["ConnectionStrings:DefaultConnectionWork"];
+#endif
+           
+            optionsBuilder.UseSqlServer(connect, opts => opts.CommandTimeout((int)TimeSpan.FromMinutes(10).TotalSeconds));
 
             return new ScanStoreContext(optionsBuilder.Options);
         }

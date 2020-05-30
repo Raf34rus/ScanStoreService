@@ -67,9 +67,9 @@ namespace ScanStoreService.Infrastructure.Security
         public DateTime IssuedAt => DateTime.UtcNow;
 
         /// <summary>
-        /// Set the timespan the token will be valid for (default is 5 min/300 seconds)
+        /// Установка интервала времени, в течение которого токен будет действителен (по умолчанию 5 мин / 300 секунд)
         /// </summary>
-        public TimeSpan ValidFor { get; set; } = TimeSpan.FromMinutes(5);
+        public TimeSpan ValidFor { get; set; } = TimeSpan.FromMinutes(30);
 
         /// <summary>
         /// "exp" (Expiration Time) Claim (returns IssuedAt + ValidFor)

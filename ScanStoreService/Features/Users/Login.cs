@@ -17,7 +17,7 @@ namespace ScanStoreService.Features.Users
     {
         public class UserData
         {
-            public string Email { get; set; }
+            public string UserName { get; set; }
 
             public string Password { get; set; }
         }
@@ -26,7 +26,7 @@ namespace ScanStoreService.Features.Users
         {
             public UserDataValidator()
             {
-                RuleFor(x => x.Email).NotNull().NotEmpty();
+                RuleFor(x => x.UserName).NotNull().NotEmpty();
                 RuleFor(x => x.Password).NotNull().NotEmpty();
             }
         }
@@ -61,15 +61,15 @@ namespace ScanStoreService.Features.Users
 
             public async Task<UserEnvelope> Handle(Command message, CancellationToken cancellationToken)
             {
-                var person = await _context.Persons.Where(x => x.Email == message.User.Email).SingleOrDefaultAsync(cancellationToken);
+                var person = await _context.Persons.Where(x => x.Username == message.User.UserName).SingleOrDefaultAsync(cancellationToken);
                 if (person == null)
                 {
-                    throw new RestException(HttpStatusCode.Unauthorized, new { Error = "Invalid email / password." });
+                    throw new RestException(HttpStatusCode.Unauthorized, new { Error = "Invalid login / password." });
                 }
 
                 if (!person.Hash.SequenceEqual(_passwordHasher.Hash(message.User.Password, person.Salt)))
                 {
-                    throw new RestException(HttpStatusCode.Unauthorized, new { Error = "Invalid email / password." });
+                    throw new RestException(HttpStatusCode.Unauthorized, new { Error = "Invalid login / password." });
                 }
 
                 var user = _mapper.Map<Domain.Persons, User>(person);

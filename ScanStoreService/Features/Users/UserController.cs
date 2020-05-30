@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ScanStoreService.Features.Users
 {
-    [Route("user")]
+    //[Route("user")]
     [Authorize(AuthenticationSchemes = JwtIssuerOptions.Schemes)]
     public class UserController
     {

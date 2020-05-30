@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ScanStoreService.Features.ContractRequestTypes
 {
-    [Route("ContractRequestTypes")]
+    [Route("Dictonary/ContractRequestTypes")]
     public class ContractRequestTypesController : Controller
     {
         private readonly IMediator _mediator;

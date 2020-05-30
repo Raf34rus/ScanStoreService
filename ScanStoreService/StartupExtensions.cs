@@ -22,8 +22,8 @@ namespace ScanStoreService
 
             var signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes("somethinglongerforthisdumbalgorithmisrequired"));
             var signingCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
-            var issuer = "issuer";
-            var audience = "audience";
+            var issuer = "issuer"; //издатель токена - любая строка
+            var audience = "audience";  // потребитель токена - любая строка
 
             services.Configure<JwtIssuerOptions>(options =>
             {
@@ -34,16 +34,16 @@ namespace ScanStoreService
 
             var tokenValidationParameters = new TokenValidationParameters
             {
-                // The signing key must match!
+                // Ключ для подписи должен совпадать!
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = signingCredentials.Key,
-                // Validate the JWT Issuer (iss) claim
+                // Проверка утверждения издателя JWT (iss)
                 ValidateIssuer = true,
                 ValidIssuer = issuer,
-                // Validate the JWT Audience (aud) claim
+                // Проверка утверждения потребителя JWT (aud)
                 ValidateAudience = true,
                 ValidAudience = audience,
-                // Validate the token expiry
+                // Проверьте срок действия токена
                 ValidateLifetime = true,
                 // If you want to allow a certain amount of clock drift, set that here:
                 ClockSkew = TimeSpan.Zero
@@ -57,11 +57,10 @@ namespace ScanStoreService
                         OnMessageReceived = (context) =>
                         {
                             var token = context.HttpContext.Request.Headers["Authorization"];
-                            if (token.Count > 0 && token[0].StartsWith("Token ", StringComparison.OrdinalIgnoreCase))
+                            if (token.Count > 0)
                             {
-                                context.Token = token[0].Substring("Token ".Length).Trim();
+                                context.Token = token[0].Trim();
                             }
-
                             return Task.CompletedTask;
                         }
                     };
@@ -75,7 +74,8 @@ namespace ScanStoreService
             var log = new LoggerConfiguration()
                 .MinimumLevel.Verbose()                
                 .Enrich.FromLogContext()
-                .WriteTo.File(new CompactJsonFormatter(), "log.clef")
+                //for debug
+                //.WriteTo.File(new CompactJsonFormatter(), "log.clef")
                 //just for local debug
                 .WriteTo.Console(outputTemplate: "{Timestamp:HH:mm:ss} [{Level}] {SourceContext} {Message}{NewLine}{Exception}", theme: AnsiConsoleTheme.Code)                
                 .CreateLogger();

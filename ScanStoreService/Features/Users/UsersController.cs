@@ -20,7 +20,6 @@ namespace ScanStoreService.Features.Users
             return await _mediator.Send(command);
         }
 
-
         [HttpPost("login")]
         public async Task<UserEnvelope> Login([FromBody] Login.Command command)
         {
