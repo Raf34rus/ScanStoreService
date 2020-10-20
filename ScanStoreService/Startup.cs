@@ -21,6 +21,7 @@ using ScanStoreService.Infrastructure.Security;
 using ScanStoreService.Features.Profiles;
 using ScanStoreService.Domain;
 using Microsoft.AspNetCore.Rewrite;
+using ScanStoreService.Features.CessionScan;
 
 namespace ScanStoreService
 {
@@ -50,10 +51,10 @@ namespace ScanStoreService
               options.UseSqlServer(
                   Configuration.GetConnectionString("DefaultConnectionWork")));
 #endif
-            services.AddDbContext<ScanStoreContext>(options =>
+/*            services.AddDbContext<ScanStoreContext>(options =>
               options.UseSqlServer(
                   Configuration.GetConnectionString("DefaultConnection")));
-
+*/
             services.AddLocalization(x => x.ResourcesPath = "Resources");
 
             services.AddSwaggerGen(x =>
@@ -107,6 +108,7 @@ namespace ScanStoreService
             services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
             services.AddScoped<ICurrentUserAccessor, CurrentUserAccessor>();
             services.AddScoped<IProfileReader, ProfileReader>();
+            services.AddScoped<ICessionScanReader, CessionScansReader>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddControllers().AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
